@@ -9,6 +9,8 @@ npm i react-cache-fetch
 
 ## Usage
 
+In this example a counter is used to change the url being called. Each call therefore returns unique data. If reset is called the counter is reset and cached data will be returned as the url will now match a previously called url.
+
 ```javascript
 import { useFetch } from "../component/useFetch"
 import React, { useState } from 'react';
@@ -38,7 +40,7 @@ const UseFetchExample = () => {
         <div>
             <button data-testid="click" onClick={() => {setclick(c => c+1)}}>Fetch</button> 
             <button data-testid="reset" onClick={() => {setclick(1)}}>Reset</button>
-            <button data-testid="refetch" onClick={() => {refetch()}}>Reset</button>
+            <button data-testid="refetch" onClick={() => {refetch()}}>Refetch</button>
         </div>
     </div>
 }
