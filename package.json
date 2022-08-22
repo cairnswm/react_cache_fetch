@@ -1,7 +1,29 @@
 {
-  "name": "react-cache-fetcher",
+  "name": "react-cache-fetch",
   "version": "0.1.0",
-  "private": true,
+  "description": "React hook that caches fetch calls so that repeat calls always return the same data",
+  "private": false,
+  "license": "MIT",
+  "main": "dist/index.js",
+  "author": "cairnswm",
+  "peerDependencies": {
+    "react": ">= 16.8.0",
+    "react-dom": ">= 16.8.0"
+  },
+  "keywords": [
+    "react",
+    "react hooks",
+    "fetch",
+    "cache"
+  ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cairnswm/react-cache-fetch.git"
+  },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
@@ -10,13 +32,17 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@babel/cli": "^7.18.10",
+    "cross-env": "^7.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "clean": "rimraf dist",
+    "compile": "npm run clean && cross-env NODE_ENV=production babel src/component --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,stories.js,__snapshots__"
   },
   "eslintConfig": {
     "extends": [
@@ -35,5 +61,7 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "dependencies": {
   }
 }

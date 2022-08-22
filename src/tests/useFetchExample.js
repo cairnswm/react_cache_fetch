@@ -1,4 +1,4 @@
-import { useFetch } from "./useFetch"
+import { useFetch } from "../component/useFetch"
 import React, { useState } from 'react';
 
 const UseFetchExample = () => {

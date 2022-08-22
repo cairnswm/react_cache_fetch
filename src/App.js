@@ -1,4 +1,4 @@
-import UseFetchExample from './component/useFetchExample';
+import UseFetchExample from './tests/useFetchExample';
 
 function App() {
   return (
