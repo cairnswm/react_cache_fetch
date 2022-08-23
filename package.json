@@ -1,6 +1,6 @@
 {
   "name": "react-cache-fetch",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "React hook that caches fetch calls so that repeat calls always return the same data",
   "private": false,
   "license": "MIT",
@@ -62,6 +62,5 @@
       "last 1 safari version"
     ]
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
