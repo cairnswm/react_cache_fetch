@@ -1,13 +1,42 @@
 import { useEffect, useRef, useReducer } from "react";
 
-export const useFetch = (url, fetch = window.fetch) => {
+export const useFetch = (url, fetch = window.fetch, options = {}) => {
   const cache = useRef({});
+  if (typeof fetch === "object") {
+    options = fetch;
+    fetch = window.fetch;    
+  }
+
+  const setCache = (iurl, data) => {
+    options.fetched = new Date().getTime()
+    cache.current[iurl] = {iurl, data, options};
+  }
+  const getCache = (iurl) => {
+    return cache.current[iurl].data;
+  }
+  const isStale = (iurl) => {
+    console.log("Is Stale, Options",iurl, cache.current[iurl].options, new Date().getTime(), new Date().getTime() - cache.current[iurl].options.fetched > cache.current[iurl].options.period)
+    
+    if (!cache.current[iurl].options.mode) {
+      return false;
+    }
+    if (cache.current[iurl].options.mode === "time") {
+      if (new Date().getTime() - cache.current[iurl].options.fetched > cache.current[iurl].options.period) {
+        console.log("Cache Expired",url)
+        return false;
+      }
+    }
+    return true;
+  }
+  const isInCache = (iurl) => {
+    return (!!cache.current[iurl]) ;
+  }
 
   const refetch = async () => {
     try {
       dispatch({ type: "REFETCH", payload: cache.current[url] });
 
-      cache.current[url] = undefined;
+      setCache(url, undefined)
       let data;
       if (url.includes("undefined") || url.includes("/0")) {
         data = [];
@@ -15,7 +44,7 @@ export const useFetch = (url, fetch = window.fetch) => {
         const response = await fetch(url);
         data = await response.json();
       }
-      cache.current[url] = data;
+      setCache(url, data);
       dispatch({ type: "FETCHED", payload: data });
     } catch (error) {
       console.error("Error Refetching", error);
@@ -52,11 +81,13 @@ export const useFetch = (url, fetch = window.fetch) => {
 
     const fetchData = async () => {
       dispatch({ type: "FETCHING" });
-      if (cache.current[url]) {
-        const data = cache.current[url];
+
+      if (isInCache(url) && (!isStale(url))) {
+        const data = getCache(url);
         dispatch({ type: "FETCHED", payload: data });
         return;
       }
+
       try {
         let data;
         if (url.includes("undefined") || url.includes("/0")) {
@@ -65,7 +96,7 @@ export const useFetch = (url, fetch = window.fetch) => {
           const response = await fetch(url);
           data = await response.json();
         }
-        cache.current[url] = data;
+        setCache(url, data);
         if (cancelRequest) return;
         dispatch({ type: "FETCHED", payload: data });
       } catch (error) {

@@ -56,7 +56,8 @@ const { status, data, error, refetch, url } = useFetch(`http://localhost/test/?i
 
 useFetch takes a single required parameter, a url. Everytime this url is accessed using useFetch the same result will be returned.
 
-useFetch has a second optional parameter that can replace the standard windows.fetch with a customized fetch component (for example a secure fetch that adds required headers before the fetch call is executed).
+useFetch may also recieve a second optional parameter that controls cache options (currently only cache invalidation supported)
+useFetch has a third optional parameter that can replace the standard windows.fetch with a customized fetch component (for example a secure fetch that adds required headers before the fetch call is executed).
 
 use Fetch returns
 - status - the current status of the fetch request (idle, fetching, fetched, error)
@@ -64,3 +65,14 @@ use Fetch returns
 - data - the data returned from the http call
 - refetch - if the data was previously cached, refetch will force a refetch of the data instead of returning the cached value
 - url - returns the current url that useFetch is using
+
+## Cache Invalidation
+
+When using useFetch the options object can be used to set an invalidation timeout
+```json
+{
+    "mode":"time",
+    "period": 1000
+}
+```
+period is the number of milliseconds before a url will be refetched
